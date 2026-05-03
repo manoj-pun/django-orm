@@ -23,6 +23,10 @@ class Restaurant(models.Model):
     def save(self,*args,**kwargs):
         print(self._state.adding,flush=True)
         super().save(*args,**kwargs)
+
+class Staff(models.Model):
+    name = models.CharField(max_length=128)
+    restaurants = models.ManyToManyField(Restaurant)
     
 
 class Rating(models.Model):
@@ -34,6 +38,6 @@ class Rating(models.Model):
         return f"Rating: {self.rating}"
     
 class Sale(models.Model):
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.SET_NULL, null=True)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.SET_NULL, null=True,related_name="sales")
     income = models.DecimalField(max_digits=8, decimal_places=2)
     datetime = models.DateTimeField()

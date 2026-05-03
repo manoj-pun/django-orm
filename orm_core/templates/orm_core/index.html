@@ -1,9 +1,8 @@
 {% extends "orm_core/base.html" %}
 
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    {{form}}
-    <button type="submit">Submit</button>
-</form>
+    {% for rating in ratings %}
+       <p>{{ rating.restaurant.name }} - {{ rating }}</p>
+            
+    {%endfor%}
 {% endblock content %}

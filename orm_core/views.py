@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import RatingForm
+from .models import Restaurant, Rating, Sale
 
 # def index(request):
 #     if request.method == "POST":
@@ -15,13 +16,7 @@ from .forms import RatingForm
 
 
 def index(request):
-    if request.method == "POST":
-        form = RatingForm(request.POST)
-        if form.is_valid():
-            print(form.cleaned_data)
-            return redirect("index")  
+    ratings = Rating.objects.select_related("restaurant")
+    context = {"ratings":ratings}
 
-    else:
-        form = RatingForm()
-
-    return render(request, "orm_core/index.html", {"form": form})
+    return render(request, "orm_core/index.html", context)
