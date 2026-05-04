@@ -46,4 +46,5 @@ class Rating(models.Model):
 class Sale(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.SET_NULL, null=True,related_name="sales")
     income = models.DecimalField(max_digits=8, decimal_places=2)
+    expenditure = models.DecimalField(max_digits=8, decimal_places=2)
     datetime = models.DateTimeField()
