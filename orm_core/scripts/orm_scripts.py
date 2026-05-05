@@ -3,10 +3,21 @@ from django.db.models import Avg, Count
 from django.db import connection
 from django.db.models import F
 import random
+from datetime import date
 
 def run():
-    restaurants = Restaurant.objects.annotate(rating_count=Count('ratings'))
+    restaurant, created = Restaurant.objects.get_or_create(
+        name="Pizzeria 5",
+        defaults={
+            'date_opened': date.today(),
+            'latitude': 40.7128,
+            'longitude': -74.0060,
+            'restaurant_type': 'IT'
+        }
+    )
 
-    for restaurant in restaurants:
-        print(f"{restaurant.name}: {restaurant.rating_count} ratings")
+    print(created)
+    print(restaurant.id)
+
+
 

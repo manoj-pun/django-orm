@@ -16,6 +16,7 @@ class Restaurant(models.Model):
     latitude = models.FloatField(validators=[MinValueValidator(-90),MaxValueValidator(90)])
     longitude = models.FloatField(validators=[MinValueValidator(-180),MaxValueValidator(180)])
     restaurant_type = models.CharField(max_length=2, choices=TypeChoices.choices)
+    capacity = models.PositiveSmallIntegerField(null=True,blank=True)
 
     def __str__(self):
         return self.name

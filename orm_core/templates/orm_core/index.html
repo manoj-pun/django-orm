@@ -1,8 +1,7 @@
 {% extends "orm_core/base.html" %}
 
 {% block content %}
-    {% for rating in ratings %}
-       <p>{{ rating.restaurant.name }} - {{ rating }}</p>
-            
-    {%endfor%}
+    {% for restaurant in restaurants %}
+        <p>{{ restaurant.name }}</p>
+    {% endfor %}
 {% endblock content %}
