@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import Q
 
 class Restaurant(models.Model):
     class TypeChoices(models.TextChoices):
@@ -44,8 +45,35 @@ class Rating(models.Model):
     def __str__(self):
         return f"Rating: {self.rating}"
     
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                name="rating_value_valid",
+                condition=Q(rating__gte=1,rating__lte=5),
+                violation_error_message="Rating invalid:must fall between 1 and 5",
+            ),
+            models.UniqueConstraint(
+                fields=["user","restaurant"],
+                name="user_restaurant_uniq",
+            )
+        ]
+    
 class Sale(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.SET_NULL, null=True,related_name="sales")
     income = models.DecimalField(max_digits=8, decimal_places=2)
     expenditure = models.DecimalField(max_digits=8, decimal_places=2)
     datetime = models.DateTimeField()
+
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    number_in_stock = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return self.name
+
+class Order(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    number_of_items = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return f"{self.number_of_items} x {self.product.name}"

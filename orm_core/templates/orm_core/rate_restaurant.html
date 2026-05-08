@@ -1,0 +1,33 @@
+{% extends "orm_core/base.html" %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="rating">Rating (1-5):</label>
+        <select name="rating" id="rating">
+            <option value="">Select rating</option>
+            {% for i in "12345"|make_list %}
+            <option value="{{ i }}" {% if attempted_rating==i %}selected{% endif %}>
+                {{ i }} star{% if i != '1' %}s{% endif %}
+            </option>
+            {% endfor %}
+        </select>
+
+        {% if error %}
+        <div class="error-message" style="color: red;">
+            ❌ {{ error }}
+        </div>
+        {% endif %}
+
+        <button type="submit">Submit Rating</button>
+    </form>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+{% endblock content %}
